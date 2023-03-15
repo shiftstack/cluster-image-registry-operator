@@ -267,6 +267,12 @@ type ImageRegistryConfigStorageSwift struct {
 	// tenant defines Openstack tenant id to be used by registry.
 	// +optional
 	TenantID string `json:"tenantID,omitempty"`
+	// tenantDomain defines Openstack tenant domain name to be used by registry.
+	// +optional
+	TenantDomain string `json:"tenantDomain,omitempty"`
+	// tenantDomainID defines Openstack tenant domain id to be used by registry.
+	// +optional
+	TenantDomainID string `json:"tenantDomainID,omitempty"`
 	// regionName defines Openstack's region in which container exists.
 	// +optional
 	RegionName string `json:"regionName,omitempty"`
