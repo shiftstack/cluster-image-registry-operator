@@ -80,8 +80,20 @@ func IsSwiftEnabled(listers *regopclient.StorageListers) (bool, error) {
 	if err := containers.List(conn, containers.ListOpts{}).EachPage(func(_ pagination.Page) (bool, error) {
 		return false, nil
 	}); err != nil {
-		klog.Errorf("error listing swift containers: %v", err)
-		return false, nil
+		var err401 gophercloud.ErrDefault401
+		if errors.As(err, &err401) {
+			klog.Errorf("authentication error while listing object containers: %v", err)
+			return false, nil
+		}
+
+		var err403 gophercloud.ErrDefault403
+		if errors.As(err, &err403) {
+			klog.Errorf("authorization error while listing object containers: %v", err)
+			return false, nil
+		}
+
+		klog.Errorf("error listing object containers: %v", err)
+		return false, err
 	}
 	return true, nil
 }
